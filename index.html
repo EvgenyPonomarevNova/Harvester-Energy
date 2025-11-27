@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Харвестер Энерджи</title>
+    <link rel="shortcut icon" href="./img/apple-touch-icon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./staly.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="./img/logo2.jpg" alt="Харвестер Энерджи">
+            </div>
+        </div>
+        <div class="header-contacts">
+            <a href="tel:+78001234567" class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                </svg>
+                +7 (800) 123-45-67
+            </a>
+            <a href="mailto:info@harvesterenergy.ru" class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                info@harvesterenergy.ru
+            </a>
+            <a href="https://t.me/harvesterenergy" class="contact-item">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.69-.88-1.09.03-.28.42-.43.95-.65 3.47-1.52 5.78-2.54 6.94-3.04.31-.13.59-.19.8-.19.36 0 .61.17.71.45.22.55.32 1.59.46 2.63z"/>
+                </svg>
+                @harvesterenergy
+            </a>
+            <button class="cta-button" onclick="openModal()">Оставить заявку</button>
+        </div>
+    </header>
+
+    <!-- Главный экран с видео-фоном -->
+    <main class="main-container">
+        <!-- Видео фон (основной) -->
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="./img/Img 4717.mp4" type="video/mp4">
+            <!-- Если видео не поддерживается, показываем фото-фон -->
+        </video>
+
+        <!-- Фон из фото (резервный) -->
+        <div class="photo-bg">
+            <div class="bg-slide active" style="background-image: url('./img/img1.jpeg')"></div>
+            <div class="bg-slide" style="background-image: url('./img/img2.jpeg')"></div>
+            <div class="bg-slide" style="background-image: url('./img/img3.jpeg')"></div>
+        </div>
+        
+        <!-- Затемнение -->
+        <div class="overlay"></div>
+        
+        <div class="content">
+            <h1 class="main-title">Энерго кластер для операторов дата-центров</h1>
+            
+            <div class="utp-text">
+                Тарифы <span class="utp-highlight">от 4,3 рубля за куб газа</span><br>
+                (1,4 КВт с НДС) с готовым земельным участком<br>
+                в аренду на 8 лет и 100Мбит линия интернета
+            </div>
+            
+            <button class="main-cta-button" onclick="openModal()">Оставить заявку</button>
+        </div>
+    </main>
+
+    <!-- Форма заявки -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2 style="color: #0a1929; margin-bottom: 25px; text-align: center; font-weight: 400; font-family: 'Inter', sans-serif; letter-spacing: 0.5px;">Оставить заявку</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение:</label>
+                    <textarea id="message" name="message" placeholder="Расскажите о вашем проекте..."></textarea>
+                </div>
+                <button type="submit" class="submit-button">Отправить заявку</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <a href="mailto:info@harvesterenergy.ru" class="footer-contact">
+            <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            info@harvesterenergy.ru
+        </a>
+        <a href="tel:+78001234567" class="footer-contact">
+            <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+            +7 (800) 123-45-67
+        </a>
+        <a href="https://t.me/harvesterenergy" class="footer-contact">
+            <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.78 5.42-.9 6.8-.06.67-.36.89-.89.56-2.45-1.83-3.57-2.98-5.79-4.78-.54-.45-.92-.69-.88-1.09.03-.28.42-.43.95-.65 3.47-1.52 5.78-2.54 6.94-3.04.31-.13.59-.19.8-.19.36 0 .61.17.71.45.22.55.32 1.59.46 2.63z"/>
+            </svg>
+            @harvesterenergy
+        </a>
+    </footer>
+    <script src="./script.js"></script>
+</body>
+</html>

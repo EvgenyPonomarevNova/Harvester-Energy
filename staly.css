@@ -1,0 +1,431 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #0a1929;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 300;
+        }
+
+        /* Шапка с размытием */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 25, 41, 0.05);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 400px;
+            height: 95px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-contacts {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .contact-item {
+            color: #b8e6f5;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item:hover {
+            color: #4a90e2;
+            transform: translateY(-1px);
+        }
+
+        .contact-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .cta-button {
+            background: transparent;
+            color: #b8e6f5;
+            border: 2px solid;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            background: #b8e6f5;
+            color: #0a1929;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 230, 245, 0.3);
+        }
+
+        /* Главный экран с видео-фоном */
+        .main-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Видео фон */
+.video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    
+    /* Улучшение качества рендеринга */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transform: translateZ(0); /* Аппаратное ускорение */
+    
+    /* Плавность */
+    filter: brightness(1.05) contrast(1.05); /* Легкая коррекция */
+}
+
+        /* Фон из фото (резервный) */
+        .photo-bg {
+            position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+        }
+
+        /* Затемнение фона */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 41, 0.5);
+            z-index: -1;
+        }
+
+        .content {
+            max-width: 900px;
+            padding: 0 30px;
+            z-index: 1;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            color: #e8f4f8;
+            letter-spacing: 1px;
+            line-height: 1.2;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .utp-text {
+            font-size: 1.8rem;
+            margin-bottom: 50px;
+            color: #b8e6f5;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            font-family: 'Manrope', sans-serif;
+            line-height: 1.4;
+        }
+
+        .utp-highlight {
+            color: #ffd700;
+            font-weight: 500;
+        }
+
+        .main-cta-button {
+            background: transparent;
+            color: #b8e6f5;
+            border: 2px solid #b8e6f5;
+            padding: 15px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+        }
+
+        .main-cta-button:hover {
+            background: #b8e6f5;
+            color: #0a1929;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(184, 230, 245, 0.3);
+        }
+
+        /* Форма */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 41, 0.95);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(232, 244, 248, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 420px;
+            border: 2px solid;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #0a1929;
+            font-weight: 300;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0a1929;
+            font-weight: 400;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #b8e6f5;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(45deg, #4a90e2, #00c853);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        /* Подвал с размытием */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 5%;
+            background: rgba(10, 25, 41, 0.05);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 1000;
+            border-top: 1px solid rgba(74, 144, 226, 0.1);
+        }
+
+        .footer-contact {
+            color: #a0d8f0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 300;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-contact:hover {
+            color: #4a90e2;
+            transform: translateY(-1px);
+        }
+
+        .footer-icon {
+            width: 14px;
+            height: 14px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .footer-contact:hover .footer-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 12px 5%;
+            }
+
+            .header-contacts {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .logo {
+                width: 300px;
+                height: 70px;
+            }
+
+            .main-title {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+
+            .utp-text {
+                font-size: 1.4rem;
+                margin-bottom: 40px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .contact-item,
+            .footer-contact {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .utp-text {
+                font-size: 1.2rem;
+            }
+
+            .contact-item,
+            .footer-contact {
+                font-size: 0.8rem;
+            }
+
+            .logo {
+                width: 250px;
+                height: 60px;
+            }
+
+            .main-cta-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
