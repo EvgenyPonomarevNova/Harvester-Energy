@@ -397,11 +397,15 @@
                 flex-direction: column;
                 gap: 8px;
                 text-align: center;
+                align-items: center;
             }
 
             .contact-item,
             .footer-contact {
                 font-size: 0.85rem;
+            }
+            .content {
+              padding-top: 100px;
             }
         }
 
