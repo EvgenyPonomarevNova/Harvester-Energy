@@ -43,19 +43,58 @@ function startPhotoSlider() {
     let currentBgSlide = 0;
     const bgSlides = document.querySelectorAll('.bg-slide');
     
+    // Проверяем, есть ли слайды
+    if (bgSlides.length === 0) {
+        console.log('❌ Слайды не найдены');
+        return;
+    }
+    
+    console.log(`✅ Найдено слайдов: ${bgSlides.length}`);
+    
     function nextBgSlide() {
+        // Убираем активный класс у текущего слайда
         bgSlides[currentBgSlide].classList.remove('active');
+        
+        // Переходим к следующему слайду
         currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
+        
+        // Добавляем активный класс новому слайду
         bgSlides[currentBgSlide].classList.add('active');
+        
+        console.log(`🔄 Переключение на слайд: ${currentBgSlide + 1}`);
+    }
+    
+    // Предзагрузка изображений для мобильных
+    function preloadImages() {
+        bgSlides.forEach((slide, index) => {
+            const bgImage = slide.style.backgroundImage;
+            const imageUrl = bgImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+            const img = new Image();
+            img.src = imageUrl;
+            console.log(`📸 Предзагрузка изображения ${index + 1}: ${imageUrl}`);
+        });
     }
     
     // Показываем первый слайд
-    if (bgSlides.length > 0) {
-        bgSlides[0].classList.add('active');
-    }
+    bgSlides[0].classList.add('active');
+    console.log('✅ Первый слайд активирован');
+    
+    // Предзагружаем изображения
+    preloadImages();
     
     // Запускаем смену слайдов каждые 5 секунд
-    setInterval(nextBgSlide, 5000);
+    const sliderInterval = setInterval(nextBgSlide, 5000);
+    
+    // Останавливаем слайдер при скрытии страницы (для экономии батареи на мобильных)
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            clearInterval(sliderInterval);
+        } else {
+            // Перезапускаем слайдер при возвращении на страницу
+            clearInterval(sliderInterval);
+            setInterval(nextBgSlide, 5000);
+        }
+    });
 }
 
 // Управление модальным окном
