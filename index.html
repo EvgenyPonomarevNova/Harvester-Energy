@@ -6,7 +6,7 @@
     <title>Харвестер Энерджи</title>
     <link rel="shortcut icon" href="./img/apple-touch-icon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./staly.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <!-- Шапка -->
@@ -46,14 +46,14 @@
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
             <h2 class="modal-title">получить презентацию</h2>
-            <form id="contact-form">
+            <form id="contact-form" action="sendmail.php" method="POST">
                 <div class="form-group">
                     <label for="name">Имя:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Телефон:</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" required placeholder="+7 (___) ___-__-__">
                 </div>
                 <div class="form-group">
                     <label for="company">Компания:</label>

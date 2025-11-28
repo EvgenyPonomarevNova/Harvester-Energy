@@ -1,153 +1,152 @@
-// Функция для отправки сообщения в Telegram
-async function sendToTelegram(formData) {
-  const botToken = "YOUR_BOT_TOKEN"; // Замените на токен вашего бота
-  const chatId = "YOUR_CHAT_ID"; // Замените на ID чата/канала
-
-  const message = `📩 Новая заявка с сайта Harvester Energy
-
-👤 Имя: ${formData.name}
-📞 Телефон: ${formData.phone}
-💬 Сообщение: ${formData.message || "Не указано"}
-
-🕒 Время: ${new Date().toLocaleString("ru-RU")}`;
-
-  try {
-    const response = await fetch(
-      `https://api.telegram.org/bot${botToken}/sendMessage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: "HTML",
-        }),
-      }
-    );
-
-    const result = await response.json();
-    return result.ok;
-  } catch (error) {
-    console.error("Ошибка отправки в Telegram:", error);
-    return false;
-  }
+// Маска для телефона
+function initPhoneMask() {
+    const phoneInput = document.getElementById('phone');
+    
+    phoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        if (value.startsWith('7') || value.startsWith('8')) {
+            value = value.substring(1);
+        }
+        
+        if (value.length > 0) {
+            value = '+7 (' + value;
+        }
+        if (value.length > 7) {
+            value = value.substring(0, 7) + ') ' + value.substring(7);
+        }
+        if (value.length > 12) {
+            value = value.substring(0, 12) + '-' + value.substring(12);
+        }
+        if (value.length > 15) {
+            value = value.substring(0, 15) + '-' + value.substring(15);
+        }
+        if (value.length > 18) {
+            value = value.substring(0, 18);
+        }
+        
+        e.target.value = value;
+    });
+    
+    phoneInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace') {
+            const cursorPosition = e.target.selectionStart;
+            if (cursorPosition <= 4) {
+                e.preventDefault();
+            }
+        }
+    });
 }
 
-// Обновите обработчик формы
-document
-  .getElementById("contact-form")
-  .addEventListener("submit", async function (e) {
+// ОБРАБОТЧИК ФОРМЫ - ОБНОВЛЕННЫЙ
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-
+    
     const formData = {
-      name: document.getElementById("name").value.trim(),
-      phone: document.getElementById("phone").value.trim(),
-      message: document.getElementById("message").value.trim(),
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        company: document.getElementById('company').value.trim()
     };
+
+    console.log('📤 Отправка формы:', formData);
 
     // Валидация
     if (!formData.name || !formData.phone) {
-      alert("Пожалуйста, заполните обязательные поля: Имя и Телефон");
-      return;
+        alert('Пожалуйста, заполните обязательные поля: Имя и Телефон');
+        return;
+    }
+
+    // Проверяем что телефон заполнен полностью
+    const cleanPhone = formData.phone.replace(/\D/g, '');
+    if (cleanPhone.length < 11) {
+        alert('Пожалуйста, введите корректный номер телефона');
+        return;
     }
 
     // Показываем индикатор загрузки
-    const submitButton = this.querySelector(".submit-button");
+    const submitButton = this.querySelector('.submit-button');
     const originalText = submitButton.textContent;
-    submitButton.textContent = "Отправка...";
+    submitButton.textContent = 'Отправка руководителю...';
     submitButton.disabled = true;
 
     try {
-      // Отправляем в Telegram
-      const telegramSuccess = await sendToTelegram(formData);
-
-      if (telegramSuccess) {
-        alert("Заявка отправлена! Мы свяжемся с вами в ближайшее время.");
-        closeModal();
-        document.getElementById("contact-form").reset();
-      } else {
-        alert(
-          "Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или свяжитесь с нами другим способом."
-        );
-      }
-    } catch (error) {
-      console.error("Ошибка:", error);
-      alert("Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.");
-    } finally {
-      // Восстанавливаем кнопку
-      submitButton.textContent = originalText;
-      submitButton.disabled = false;
-    }
-  });
-        // Проверка поддержки видео и загрузки
-        const videoBg = document.querySelector('.video-bg');
-        const photoBg = document.querySelector('.photo-bg');
+        console.log('🔄 Отправка заявки руководителю...');
         
-        videoBg.addEventListener('error', function() {
-            // Если видео не загрузилось, показываем фото-фон
-            console.log('Видео не доступно, включаем фото-фон');
-            photoBg.style.display = 'block';
-            startPhotoSlider();
-        });
-        
-        videoBg.addEventListener('canplay', function() {
-            // Видео доступно, скрываем фото-фон
-            photoBg.style.display = 'none';
+        // Отправляем на сервер
+        const response = await fetch('sendmail.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(formData)
         });
 
-        // Слайдер фоновых фото (только если видео недоступно)
-        function startPhotoSlider() {
-            let currentBgSlide = 0;
-            const bgSlides = document.querySelectorAll('.bg-slide');
-            
-            function nextBgSlide() {
-                bgSlides[currentBgSlide].classList.remove('active');
-                currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
-                bgSlides[currentBgSlide].classList.add('active');
-            }
-            
-            // Смена фона каждые 5 секунд
-            setInterval(nextBgSlide, 5000);
-        }
-
-        // Управление модальным окном
-        function openModal() {
-            document.getElementById('modal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                message: document.getElementById('message').value
-            };
-
-            console.log('Данные формы:', formData);
-            
-            alert('Заявка отправлена! Мы свяжемся с вами в ближайшее время.');
+        const result = await response.text();
+        console.log('📨 Ответ сервера:', response.status, result);
+        
+        if (response.ok) {
+            alert('✅ Заявка отправлена руководителю! Мы перезвоним вам в течение 15 минут.');
             closeModal();
-            
             document.getElementById('contact-form').reset();
-        });
-
-        // Изначально проверяем, доступно ли видео
-        if (videoBg.readyState === 0) {
-            // Видео еще не начало загружаться
-            photoBg.style.display = 'block';
-            startPhotoSlider();
+        } else {
+            throw new Error(result);
         }
+    } catch (error) {
+        console.error('❌ Ошибка:', error);
+        alert('❌ Ошибка отправки. Пожалуйста, позвоните нам: +7 (800) 123-45-67');
+    } finally {
+        // Восстанавливаем кнопку
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+    }
+});
+
+// Слайдер фоновых фото
+const videoBg = document.querySelector('.video-bg');
+const photoBg = document.querySelector('.photo-bg');
+
+videoBg.addEventListener('error', function() {
+    console.log('Видео не доступно, включаем фото-фон');
+    photoBg.style.display = 'block';
+    startPhotoSlider();
+});
+
+function startPhotoSlider() {
+    let currentBgSlide = 0;
+    const bgSlides = document.querySelectorAll('.bg-slide');
+    
+    function nextBgSlide() {
+        bgSlides[currentBgSlide].classList.remove('active');
+        currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
+        bgSlides[currentBgSlide].classList.add('active');
+    }
+    
+    setInterval(nextBgSlide, 5000);
+}
+
+// Управление модальным окном
+function openModal() {
+    document.getElementById('modal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        closeModal();
+    }
+}
+
+// Изначальная проверка видео
+if (videoBg.readyState === 0) {
+    photoBg.style.display = 'block';
+    startPhotoSlider();
+}
+
+// Инициализация маски телефона после загрузки
+document.addEventListener('DOMContentLoaded', function() {
+    initPhoneMask();
+});
