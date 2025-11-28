@@ -38,79 +38,7 @@ function initPhoneMask() {
     });
 }
 
-// ОБРАБОТЧИК ФОРМЫ - ОБНОВЛЕННЫЙ
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        company: document.getElementById('company').value.trim()
-    };
-
-    console.log('📤 Отправка формы:', formData);
-
-    // Валидация
-    if (!formData.name || !formData.phone) {
-        alert('Пожалуйста, заполните обязательные поля: Имя и Телефон');
-        return;
-    }
-
-    // Проверяем что телефон заполнен полностью
-    const cleanPhone = formData.phone.replace(/\D/g, '');
-    if (cleanPhone.length < 11) {
-        alert('Пожалуйста, введите корректный номер телефона');
-        return;
-    }
-
-    // Показываем индикатор загрузки
-    const submitButton = this.querySelector('.submit-button');
-    const originalText = submitButton.textContent;
-    submitButton.textContent = 'Отправка руководителю...';
-    submitButton.disabled = true;
-
-    try {
-        console.log('🔄 Отправка заявки руководителю...');
-        
-        // Отправляем на сервер
-        const response = await fetch('sendmail.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(formData)
-        });
-
-        const result = await response.text();
-        console.log('📨 Ответ сервера:', response.status, result);
-        
-        if (response.ok) {
-            alert('✅ Заявка отправлена руководителю! Мы перезвоним вам в течение 15 минут.');
-            closeModal();
-            document.getElementById('contact-form').reset();
-        } else {
-            throw new Error(result);
-        }
-    } catch (error) {
-        console.error('❌ Ошибка:', error);
-        alert('❌ Ошибка отправки. Пожалуйста, позвоните нам: +7 (800) 123-45-67');
-    } finally {
-        // Восстанавливаем кнопку
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-    }
-});
-
 // Слайдер фоновых фото
-const videoBg = document.querySelector('.video-bg');
-const photoBg = document.querySelector('.photo-bg');
-
-videoBg.addEventListener('error', function() {
-    console.log('Видео не доступно, включаем фото-фон');
-    photoBg.style.display = 'block';
-    startPhotoSlider();
-});
-
 function startPhotoSlider() {
     let currentBgSlide = 0;
     const bgSlides = document.querySelectorAll('.bg-slide');
@@ -121,6 +49,12 @@ function startPhotoSlider() {
         bgSlides[currentBgSlide].classList.add('active');
     }
     
+    // Показываем первый слайд
+    if (bgSlides.length > 0) {
+        bgSlides[0].classList.add('active');
+    }
+    
+    // Запускаем смену слайдов каждые 5 секунд
     setInterval(nextBgSlide, 5000);
 }
 
@@ -133,20 +67,89 @@ function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
 
-window.onclick = function(event) {
-    const modal = document.getElementById('modal');
-    if (event.target === modal) {
-        closeModal();
-    }
-}
-
-// Изначальная проверка видео
-if (videoBg.readyState === 0) {
-    photoBg.style.display = 'block';
-    startPhotoSlider();
-}
-
-// Инициализация маски телефона после загрузки
+// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация маски телефона
     initPhoneMask();
+    
+    // Активируем слайдер фото сразу, так как видео закомментировано
+    const photoBg = document.querySelector('.photo-bg');
+    if (photoBg) {
+        photoBg.style.display = 'block';
+        startPhotoSlider();
+    }
+    
+    // Обработчик формы
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                company: document.getElementById('company').value.trim()
+            };
+
+            console.log('📤 Отправка формы:', formData);
+
+            // Валидация
+            if (!formData.name || !formData.phone) {
+                alert('Пожалуйста, заполните обязательные поля: Имя и Телефон');
+                return;
+            }
+
+            // Проверяем что телефон заполнен полностью
+            const cleanPhone = formData.phone.replace(/\D/g, '');
+            if (cleanPhone.length < 11) {
+                alert('Пожалуйста, введите корректный номер телефона');
+                return;
+            }
+
+            // Показываем индикатор загрузки
+            const submitButton = this.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Отправка руководителю...';
+            submitButton.disabled = true;
+
+            try {
+                console.log('🔄 Отправка заявки руководителю...');
+                
+                // Отправляем на сервер
+                const response = await fetch('sendmail.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(formData)
+                });
+
+                const result = await response.text();
+                console.log('📨 Ответ сервера:', response.status, result);
+                
+                if (response.ok) {
+                    alert('✅ Заявка отправлена руководителю! Мы перезвоним вам в течение 15 минут.');
+                    closeModal();
+                    document.getElementById('contact-form').reset();
+                } else {
+                    throw new Error(result);
+                }
+            } catch (error) {
+                console.error('❌ Ошибка:', error);
+                alert('❌ Ошибка отправки. Пожалуйста, позвоните нам: +7 (800) 123-45-67');
+            } finally {
+                // Восстанавливаем кнопку
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });
+    }
+    
+    // Обработчик клика вне модального окна
+    window.onclick = function(event) {
+        const modal = document.getElementById('modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
 });
